@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>LINE User ID 取得</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+    <h2>LINE User ID 取得</h2>
+    <p>この画面は自動で userId を取得します。</p>
+
+    <div id="result" style="margin-top:20px; font-size:18px;"></div>
+
+    <script>
+        async function main() {
+            await liff.init({ liffId: "2008908398-l0MoqzHR" });  // ← 後で置き換える
+
+            if (!liff.isLoggedIn()) {
+                liff.login();
+                return;
+            }
+
+            const profile = await liff.getProfile();
+            const userId = profile.userId;
+
+            document.getElementById("result").innerHTML =
+                "あなたの LINE User ID:<br><b>" + userId + "</b>";
+
+            // 自動でクリップボードにコピー
+            navigator.clipboard.writeText(userId);
+        }
+
+        main();
+    </script>
+</body>
+</html>
