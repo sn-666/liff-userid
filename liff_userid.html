@@ -7,13 +7,17 @@
 </head>
 <body>
     <h2>LINE User ID 取得</h2>
-    <p>この画面は自動で userId を取得します。</p>
+    <p>下にあなたの LINE User ID が表示されます。</p>
 
     <div id="result" style="margin-top:20px; font-size:18px;"></div>
 
+    <button id="copyBtn" style="margin-top:20px; padding:10px 20px; font-size:16px;">
+        コピーする
+    </button>
+
     <script>
         async function main() {
-            await liff.init({ liffId: "2008908398-l0MoqzHR" });  // ← liffid
+            await liff.init({ liffId: "YOUR_LIFF_ID" });
 
             if (!liff.isLoggedIn()) {
                 liff.login();
@@ -26,12 +30,15 @@
             document.getElementById("result").innerHTML =
                 "あなたの LINE User ID:<br><b>" + userId + "</b>";
 
-            // 自動でクリップボードにコピー
-            navigator.clipboard.writeText(userId);
+            // ボタンを押したときだけコピー（iPhoneでも動作）
+            document.getElementById("copyBtn").onclick = function () {
+                navigator.clipboard.writeText(userId).then(() => {
+                    alert("コピーしました！");
+                });
+            };
         }
 
         main();
     </script>
 </body>
 </html>
-
