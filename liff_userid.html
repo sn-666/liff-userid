@@ -16,34 +16,12 @@
     </button>
 
     <button id="shareBtn" style="margin-top:20px; padding:10px 20px; font-size:16px;">
-    LINEで共有する
-</button>
+        LINEで共有する
+    </button>
 
     <script>
-        document.getElementById("shareBtn").onclick = async function () {
-            const profile = await liff.getProfile();
-            const userId = profile.userId;
-        
-            // LINEの共有機能を使う
-            liff.shareTargetPicker([
-                {
-                    type: "text",
-                    text: "この生徒の userId:\n" + userId
-                }
-            ])
-            .then(() => {
-                alert("共有しました！");
-            })
-            .catch((err) => {
-                console.error(err);
-                alert("共有がキャンセルされました。");
-            });
-        };
-    </script>
-    
-    <script>
         async function main() {
-            await liff.init({ liffId: "2008908398-l0MoqzHR" });
+            await liff.init({ liffId: "YOUR_LIFF_ID" });
 
             if (!liff.isLoggedIn()) {
                 liff.login();
@@ -56,11 +34,32 @@
             document.getElementById("result").innerHTML =
                 "あなたの LINE User ID:<br><b>" + userId + "</b>";
 
-            // ボタンを押したときだけコピー（iPhoneでも動作）
+            // コピー
             document.getElementById("copyBtn").onclick = function () {
                 navigator.clipboard.writeText(userId).then(() => {
                     alert("コピーしました！");
                 });
+            };
+
+            // 共有
+            document.getElementById("shareBtn").onclick = async function () {
+                try {
+                    const result = await liff.shareTargetPicker([
+                        {
+                            type: "text",
+                            text: "この生徒の userId:\n" + userId
+                        }
+                    ]);
+
+                    if (result) {
+                        alert("共有しました！");
+                    } else {
+                        alert("共有がキャンセルされました。");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("共有に失敗しました。");
+                }
             };
         }
 
@@ -68,5 +67,3 @@
     </script>
 </body>
 </html>
-
-
