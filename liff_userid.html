@@ -15,6 +15,32 @@
         コピーする
     </button>
 
+    <button id="shareBtn" style="margin-top:20px; padding:10px 20px; font-size:16px;">
+    LINEで共有する
+</button>
+
+    <script>
+        document.getElementById("shareBtn").onclick = async function () {
+            const profile = await liff.getProfile();
+            const userId = profile.userId;
+        
+            // LINEの共有機能を使う
+            liff.shareTargetPicker([
+                {
+                    type: "text",
+                    text: "この生徒の userId:\n" + userId
+                }
+            ])
+            .then(() => {
+                alert("共有しました！");
+            })
+            .catch((err) => {
+                console.error(err);
+                alert("共有がキャンセルされました。");
+            });
+        };
+    </script>
+    
     <script>
         async function main() {
             await liff.init({ liffId: "2008908398-l0MoqzHR" });
@@ -42,4 +68,5 @@
     </script>
 </body>
 </html>
+
 
