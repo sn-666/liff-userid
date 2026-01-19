@@ -65,10 +65,38 @@
                     alert("共有に失敗しました。");
                 }
             };
+            //送信
+            document.getElementById("sendToPC").addEventListener("click", () => {
+                if (!userId) {
+                    alert("userId が取得できていません。");
+                    return;
+                }
+            
+                fetch("http://127.0.0.1:5000/userid", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ userId: userId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "ok") {
+                        alert("PCに送信しました！");
+                    } else {
+                        alert("送信エラー：" + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert("PCに接続できません。PC側のアプリが起動しているか確認してください。");
+                    console.error(error);
+                });
+            });
         }
 
         main();
     </script>
 </body>
 </html>
+
 
